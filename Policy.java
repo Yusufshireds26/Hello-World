@@ -2,55 +2,38 @@ public class Policy
 {
    private int policyNumber;
    private String providerName;
-   private String firstName;
-   private String lastName;
-   private int age;
-   private String smokingStatus;
-   private double height;
-   private double weight;
+   private PolicyHolder policyHolder;
+   private static int policyCount = 0;
 
    public Policy()
    {
       policyNumber = 0;
       providerName = "";
-      firstName = "";
-      lastName = "";
-      age = 0;
-      smokingStatus = "";
-      height = 0.0;
-      weight = 0.0;
+      policyHolder = new PolicyHolder();
+      policyCount++;
    }
 
-   public Policy(int policyNumber, String providerName, String firstName,
-                 String lastName, int age, String smokingStatus,
-                 double height, double weight)
+   public Policy(int policyNumber, String providerName, PolicyHolder policyHolder)
    {
       this.policyNumber = policyNumber;
       this.providerName = providerName;
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.age = age;
-      this.smokingStatus = smokingStatus;
-      this.height = height;
-      this.weight = weight;
-   }
-
-   public double calculateBMI()
-   {
-      return (weight * 703) / (height * height);
+      this.policyHolder = new PolicyHolder(policyHolder.getFirstName(), policyHolder.getLastName(),
+                                           policyHolder.getAge(), policyHolder.getSmokingStatus(),
+                                           policyHolder.getHeight(), policyHolder.getWeight());
+      policyCount++;
    }
 
    public double calculatePolicyPrice()
    {
       double price = 600.0;
-      double bmi = calculateBMI();
+      double bmi = policyHolder.getBMI();
 
-      if (age > 50)
+      if (policyHolder.getAge() > 50)
       {
          price += 75.0;
       }
 
-      if (smokingStatus.equalsIgnoreCase("smoker"))
+      if (policyHolder.getSmokingStatus().equalsIgnoreCase("smoker"))
       {
          price += 100.0;
       }
@@ -73,34 +56,16 @@ public class Policy
       return providerName;
    }
 
-   public String getFirstName()
+   public PolicyHolder getPolicyHolder()
    {
-      return firstName;
+      return new PolicyHolder(policyHolder.getFirstName(), policyHolder.getLastName(),
+                              policyHolder.getAge(), policyHolder.getSmokingStatus(),
+                              policyHolder.getHeight(), policyHolder.getWeight());
    }
 
-   public String getLastName()
+   public static int getPolicyCount()
    {
-      return lastName;
-   }
-
-   public int getAge()
-   {
-      return age;
-   }
-
-   public String getSmokingStatus()
-   {
-      return smokingStatus;
-   }
-
-   public double getHeight()
-   {
-      return height;
-   }
-
-   public double getWeight()
-   {
-      return weight;
+      return policyCount;
    }
 
    public void setPolicyNumber(int policyNumber)
@@ -113,33 +78,18 @@ public class Policy
       this.providerName = providerName;
    }
 
-   public void setFirstName(String firstName)
+   public void setPolicyHolder(PolicyHolder policyHolder)
    {
-      this.firstName = firstName;
+      this.policyHolder = new PolicyHolder(policyHolder.getFirstName(), policyHolder.getLastName(),
+                                           policyHolder.getAge(), policyHolder.getSmokingStatus(),
+                                           policyHolder.getHeight(), policyHolder.getWeight());
    }
 
-   public void setLastName(String lastName)
+   public String toString()
    {
-      this.lastName = lastName;
-   }
-
-   public void setAge(int age)
-   {
-      this.age = age;
-   }
-
-   public void setSmokingStatus(String smokingStatus)
-   {
-      this.smokingStatus = smokingStatus;
-   }
-
-   public void setHeight(double height)
-   {
-      this.height = height;
-   }
-
-   public void setWeight(double weight)
-   {
-      this.weight = weight;
+      return "Policy Number: " + policyNumber +
+             "\nProvider Name: " + providerName +
+             "\n" + policyHolder +
+             String.format("\nPolicy Price: $%.2f", calculatePolicyPrice());
    }
 }
